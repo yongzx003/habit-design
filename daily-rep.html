@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>The Daily Rep</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#fff;--bg2:#f5f4f0;--txt:#111;--txt2:#555;--txt3:#999;--border:#ccc;--bL:#ddd;--green:#1D9E75;--amber:#C08620;--f:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif}
+.dark{--bg:#0e0e0d;--bg2:#1a1a18;--txt:#f0ece5;--txt2:#b0aa9f;--txt3:#7a756d;--border:#444;--bL:#333;--green:#34d399;--amber:#f0b040}
+body{font-family:var(--f);background:var(--bg);color:var(--txt);-webkit-tap-highlight-color:transparent;transition:background .2s,color .2s}
+button{font-family:var(--f);cursor:pointer}textarea,input{font-family:var(--f);outline:none}
+textarea:focus,input:focus{border-color:var(--txt3)!important}
+.ta{width:100%;padding:10px 12px;font-size:14px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--txt);resize:vertical;box-sizing:border-box;line-height:1.5}
+.inp{width:100%;padding:8px 10px;font-size:13px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--txt);margin-bottom:6px;box-sizing:border-box}
+.card{margin-bottom:8px;padding:12px 14px;border-radius:12px;background:var(--bg);border:1.5px solid var(--border)}
+.sec{margin-bottom:16px;padding:14px 16px 12px;border-radius:16px}
+.bi{flex:1;padding:10px 8px;font-size:13px;font-weight:500;border-radius:10px;line-height:1.3;border:1.5px solid var(--green);background:transparent;color:var(--green);transition:all .15s}
+.bi.on{background:var(--green);color:#fff}
+.bb{flex:1;padding:10px 8px;font-size:13px;font-weight:500;border-radius:10px;line-height:1.3;border:1.5px solid var(--amber);background:transparent;color:var(--amber);transition:all .15s}
+.bb.on{background:var(--amber);color:#fff}
+.tbar{position:fixed;bottom:0;left:0;right:0;background:var(--bg);border-top:1px solid var(--border);display:flex;justify-content:center;padding:8px 0 14px;z-index:50;transition:background .2s}
+.tbtn{flex:1;max-width:80px;padding:4px 0;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px}
+.pz{padding:12px 14px;border-radius:12px;background:var(--bg);border:1px solid var(--bL);margin-bottom:8px}
+.pi{display:flex;align-items:flex-start;gap:8px;padding:6px 0;border-bottom:.5px solid var(--bL)}
+.pi:last-child{border-bottom:none}
+.pc{width:20px;height:20px;border-radius:4px;border:1.5px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-top:1px;background:var(--bg);color:var(--green);transition:all .15s}
+.pc.dn{background:var(--green);border-color:var(--green);color:#fff}
+.sg{display:flex;gap:0;margin-bottom:16px;background:var(--bg2);border-radius:10px;padding:3px}
+.sgb{flex:1;padding:8px 0;font-size:13px;border-radius:8px;border:none;transition:all .15s}
+</style>
+</head>
+<body>
+<div id="root" style="max-width:500px;margin:0 auto;min-height:100vh;padding-bottom:80px"></div>
+<script>
+!function(){
+var ce=React.createElement,us=React.useState,ue=React.useEffect,ur=React.useRef,F=React.Fragment;
+var IDS=[{id:"entrepreneur",emoji:"\u{1F9F1}",color:"#1D9E75",bg:"rgba(29,158,117,.06)",label:"Entrepreneur"},{id:"finance",emoji:"\u{1F4B0}",color:"#C08620",bg:"rgba(192,134,32,.06)",label:"Financially literate"},{id:"learner",emoji:"\u{1F4DA}",color:"#534AB7",bg:"rgba(83,74,183,.05)",label:"Effective learner"},{id:"looks",emoji:"\u{1F4AA}",color:"#D85A30",bg:"rgba(216,90,48,.05)",label:"Good-looking man"},{id:"healthy",emoji:"\u{1F33F}",color:"#0F6E56",bg:"rgba(15,110,86,.05)",label:"Healthy person"},{id:"confident",emoji:"\u{1F5E3}\uFE0F",color:"#378ADD",bg:"rgba(55,138,221,.05)",label:"Confident connector"},{id:"ask",emoji:"\u270B",color:"#D4537E",bg:"rgba(212,83,126,.05)",label:"Ask muscle"},{id:"nownothow",emoji:"\u26A1",color:"#888780",bg:"rgba(0,0,0,.03)",label:"Now, not how"}];
+var IM={entrepreneur:{now:"Selling durian puffs, building SOPs",next:"First paying consulting client"},finance:{now:"40/50/10 system running, ASNB active",next:"3 months perfect payday ritual"},learner:{now:"Reading daily, capturing into Discord",next:"5 ideas implemented within 24hr"},looks:{now:"Gym consistent, skincare automatic",next:"12-week body comp visible results"},healthy:{now:"Movement routines active, sleep 11pm",next:"14 days sleeping by 11pm"},confident:{now:"Talking to customers, meetings",next:"1 new person/week 8 weeks"},ask:{now:"Starting to make asks",next:"1 uncomfortable ask/week 8 weeks"},nownothow:{now:"Aware, catching myself",next:"Catch & redirect 3x this week"}};
+var IH=[{id:"e1",identity:"entrepreneur",text:"Deep work on business",ideal:"3hr focused block",broken:"30 min on #1 task",threshold:66},{id:"e2",identity:"entrepreneur",text:"Creative thinking",ideal:"1hr brainstorm + write-up",broken:"1 idea into Second Brain",threshold:66},{id:"e3",identity:"entrepreneur",text:"Communication / outreach",ideal:"Meeting or customer talk",broken:"1 WhatsApp to warm contact",threshold:66},{id:"f1",identity:"finance",text:"Log expenses",ideal:"Full log same day",broken:"WhatsApp yourself each purchase",threshold:66},{id:"l1",identity:"learner",text:"Read + capture idea",ideal:"10pg AM + 5pg PM, write idea",broken:"1 page + 1 thought captured",threshold:66},{id:"l2",identity:"learner",text:"Articulate practice",ideal:"Count 1-10 fully energized",broken:"1 sentence with full clarity",threshold:66},{id:"g3",identity:"looks",text:"Gym / training",ideal:"Full gym session",broken:"20 push-ups + 1 min plank",threshold:66},{id:"g4",identity:"looks",text:"Movement routine",ideal:"Full AM + PM stretches",broken:"Chest stretch + chin tuck",threshold:66},{id:"h1",identity:"healthy",text:"Sleep by 11pm",ideal:"Lights out, phone outside",broken:"In bed 11:30pm, no screen",threshold:66},{id:"h2",identity:"healthy",text:"Meditation",ideal:"2 min focused breathing",broken:"3 deep breaths before sleep",threshold:66},{id:"c1",identity:"confident",text:"Connect with someone",ideal:"Introduce to 1 stranger",broken:"1 deeper question in any convo",threshold:66},{id:"a1",identity:"ask",text:"Make one ask",ideal:"Something uncomfortable",broken:"Something small (opinion, help)",threshold:66}];
+var IG=[{id:"g1",identity:"looks",text:"AM skincare",note:"Cleanser \u2192 Ceradan \u2192 SPF",reps:66},{id:"g2",identity:"looks",text:"PM skincare",note:"Cleanser \u2192 Adapalene \u2192 Ceradan",reps:66}];
+var MAX=14,WK=["S","M","T","W","T","F","S"];
+var PH=[{id:"p1",emoji:"\u{1F305}",label:"Phay 1 \u2014 Morning",sub:"Hard work, deep focus",color:"#D85A30"},{id:"p2",emoji:"\u2600\uFE0F",label:"Phay 2 \u2014 Afternoon",sub:"Meet people, communicate",color:"#C08620"},{id:"p3",emoji:"\u{1F319}",label:"Phay 3 \u2014 Night",sub:"Cool down, reflect, rest",color:"#534AB7"}];
+
+function dk(d){d=d||new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function wkD(){var t=new Date(),dy=t.getDay(),m=new Date(t);m.setDate(t.getDate()-((dy+6)%7));return Array.from({length:7},function(_,i){var d=new Date(m);d.setDate(m.getDate()+i);return d})}
+function cR(days,hid){var c=0;Object.values(days).forEach(function(d){if(d[hid]==="done"||d[hid]==="broken")c++});return c}
+function ld(){try{var s=localStorage.getItem("dailyrep-v6");return s?JSON.parse(s):null}catch(e){return null}}
+function sv(d){try{localStorage.setItem("dailyrep-v6",JSON.stringify(d))}catch(e){}}
+function lt(){try{return localStorage.getItem("dailyrep-theme")||"light"}catch(e){return"light"}}
+
+function App(){
+var sv0=ur(ld());
+var _t=us("today"),tab=_t[0],sTab=_t[1];
+var _th=us(lt()),theme=_th[0],sTh=_th[1];
+var _d=us(function(){var s=sv0.current;return s?{days:s.days||{},ref:s.ref||{},hab:s.hab||IH,grad:s.grad||IG,map:s.map||IM,plans:s.plans||{}}:{days:{},ref:{},hab:IH,grad:IG,map:IM,plans:{}}}),data=_d[0],sD=_d[1];
+var _sa=us(null),showAdd=_sa[0],sSA=_sa[1];
+var _nh=us({text:"",ideal:"",broken:"",threshold:66}),newH=_nh[0],sNH=_nh[1];
+var _em=us(null),editMap=_em[0],sEM=_em[1];
+var _md=us({now:"",next:""}),mapDr=_md[0],sMD=_md[1];
+var _sg=us(false),showGrad=_sg[0],sSG=_sg[1];
+var _ap=us(null),addP=_ap[0],sAP=_ap[1];
+var _nt=us(""),newTask=_nt[0],sNT=_nt[1];
+var _sec=us("reps"),sec=_sec[0],sSec=_sec[1];
+
+var today=dk(),tD=new Date(),isSun=tD.getDay()===0;
+var hT=data.days[today]||{},rT=data.ref[today]||{};
+var hab=data.hab||[],grad=data.grad||[],mp=data.map||IM;
+var tp=data.plans[today]||{p1:[],p2:[],p3:[]};
+
+ue(function(){document.documentElement.className=theme==="dark"?"dark":"";try{localStorage.setItem("dailyrep-theme",theme)}catch(e){}},[theme]);
+ue(function(){var t=setTimeout(function(){sv(data)},300);return function(){clearTimeout(t)}},[data]);
+
+function sH(id,val){var c=hT[id],n=c===val?null:val;sD(function(p){var nd=Object.assign({},p);nd.days=Object.assign({},p.days);nd.days[today]=Object.assign({},p.days[today]);nd.days[today][id]=n;return nd})}
+function sR(k,v){sD(function(p){var n=Object.assign({},p);n.ref=Object.assign({},p.ref);n.ref[today]=Object.assign({},p.ref[today]);n.ref[today][k]=v;return n})}
+function sSR(k,v){sD(function(p){var n=Object.assign({},p);n.ref=Object.assign({},p.ref);n.ref["sun-"+today]=Object.assign({},p.ref["sun-"+today]);n.ref["sun-"+today][k]=v;return n})}
+function aH(iid){if(hab.length>=MAX||!newH.text.trim())return;var h={id:"h"+Date.now(),identity:iid,text:newH.text.trim(),ideal:newH.ideal.trim()||newH.text.trim(),broken:newH.broken.trim()||"Minimum version",threshold:Number(newH.threshold)||66};sD(function(p){return Object.assign({},p,{hab:p.hab.concat([h])})});sNH({text:"",ideal:"",broken:"",threshold:66});sSA(null)}
+function gH(h){var r=cR(data.days,h.id);sD(function(p){return Object.assign({},p,{hab:p.hab.filter(function(x){return x.id!==h.id}),grad:(p.grad||[]).concat([{id:h.id,identity:h.identity,text:h.text,note:h.ideal,reps:r}])})})}
+function sM(iid){sD(function(p){var nm=Object.assign({},p.map);nm[iid]={now:mapDr.now,next:mapDr.next};return Object.assign({},p,{map:nm})});sEM(null)}
+function aPT(pid){if(!newTask.trim())return;var t={id:"t"+Date.now(),text:newTask.trim(),done:false};sD(function(p){var n=Object.assign({},p);n.plans=Object.assign({},p.plans);var tp2=Object.assign({},p.plans[today]||{p1:[],p2:[],p3:[]});tp2[pid]=(tp2[pid]||[]).concat([t]);n.plans[today]=tp2;return n});sNT("");sAP(null)}
+function tPT(pid,tid){sD(function(p){var n=Object.assign({},p);n.plans=Object.assign({},p.plans);var tp2=Object.assign({},p.plans[today]||{p1:[],p2:[],p3:[]});tp2[pid]=(tp2[pid]||[]).map(function(t){return t.id===tid?Object.assign({},t,{done:!t.done}):t});n.plans[today]=tp2;return n})}
+function rPT(pid,tid){sD(function(p){var n=Object.assign({},p);n.plans=Object.assign({},p.plans);var tp2=Object.assign({},p.plans[today]||{p1:[],p2:[],p3:[]});tp2[pid]=(tp2[pid]||[]).filter(function(t){return t.id!==tid});n.plans[today]=tp2;return n})}
+
+var done=hab.filter(function(h){return hT[h.id]==="done"||hT[h.id]==="broken"}).length;
+var total=hab.length,pct=total>0?Math.round(done/total*100):0;
+var wd=wkD();
+var tabs=[{key:"today",label:"Today",icon:"\u25CB"},{key:"week",label:"Week",icon:"\u25A4"},{key:"map",label:"Map",icon:"\u25CE"}];
+if(isSun)tabs.push({key:"review",label:"Review",icon:"\u2600"});
+var grp=IDS.filter(function(id){return id.id!=="nownothow"}).map(function(id){return Object.assign({},id,{habits:hab.filter(function(h){return h.identity===id.id}),gr:grad.filter(function(g){return g.identity===id.id})})}).filter(function(g){return g.habits.length>0||g.gr.length>0});
+var ds=tD.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"});
+
+return ce("div",null,
+// HEADER
+ce("div",{style:{padding:"24px 20px 12px",display:"flex",justifyContent:"space-between",alignItems:"flex-start"}},
+  ce("div",null,
+    ce("div",{style:{fontSize:11,letterSpacing:2.5,textTransform:"uppercase",color:"var(--txt3)",marginBottom:4}},"The daily rep"),
+    ce("div",{style:{fontSize:20,fontWeight:500}},ds),
+    ce("div",{style:{fontSize:13,color:"var(--txt3)",marginTop:2}},"Every rep is a vote for who you\u2019re becoming.")
+  ),
+  ce("button",{onClick:function(){sTh(theme==="dark"?"light":"dark")},style:{padding:"6px 12px",borderRadius:8,border:"1px solid var(--border)",background:"var(--bg2)",color:"var(--txt2)",fontSize:12,marginTop:4}},theme==="dark"?"\u2600 Light":"\u{1F319} Dark")
+),
+
+// TODAY
+tab==="today"?ce("div",{style:{padding:"0 16px"}},
+  // Ring
+  ce("div",{style:{display:"flex",alignItems:"center",gap:16,padding:"16px 18px",background:"var(--bg2)",borderRadius:16,marginBottom:20}},
+    ce("div",{style:{position:"relative",width:52,height:52,flexShrink:0}},
+      ce("svg",{viewBox:"0 0 52 52",style:{transform:"rotate(-90deg)"}},ce("circle",{cx:26,cy:26,r:22,fill:"none",stroke:"var(--border)",strokeWidth:4}),ce("circle",{cx:26,cy:26,r:22,fill:"none",stroke:"var(--green)",strokeWidth:4,strokeDasharray:pct*1.382+" 138.2",strokeLinecap:"round"})),
+      ce("div",{style:{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center",fontSize:13,fontWeight:500}},pct+"%")
+    ),
+    ce("div",null,ce("div",{style:{fontSize:16,fontWeight:500}},done+" of "+total+" reps"),ce("div",{style:{fontSize:13,color:"var(--txt3)"}},done===total&&total>0?"All done. Perfect day.":done===0?"Pick a rep. Any rep.":"Keep going. Broken days count."),ce("div",{style:{fontSize:11,color:"var(--txt3)",marginTop:2}},hab.length+"/"+MAX+" active"))
+  ),
+  // Section toggle
+  ce("div",{className:"sg"},
+    ce("button",{className:"sgb",onClick:function(){sSec("reps")},style:{fontWeight:sec==="reps"?500:400,background:sec==="reps"?"var(--bg)":"transparent",color:sec==="reps"?"var(--txt)":"var(--txt3)"}},"Reps"),
+    ce("button",{className:"sgb",onClick:function(){sSec("plan")},style:{fontWeight:sec==="plan"?500:400,background:sec==="plan"?"var(--bg)":"transparent",color:sec==="plan"?"var(--txt)":"var(--txt3)"}},"Day plan")
+  ),
+  // REPS
+  sec==="reps"?ce(F,null,
+    grp.map(function(g){return ce("div",{key:g.id,className:"sec",style:{background:g.bg,border:".5px solid "+g.color+"22"}},
+      ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:10}},
+        ce("div",{style:{display:"flex",alignItems:"center",gap:8}},ce("span",{style:{fontSize:18}},g.emoji),ce("span",{style:{fontSize:14,fontWeight:500,color:g.color}},g.label)),
+        hab.length<MAX?ce("button",{onClick:function(){sSA(showAdd===g.id?null:g.id)},style:{fontSize:18,width:28,height:28,borderRadius:8,border:"none",background:"var(--bg)",color:g.color,display:"flex",alignItems:"center",justifyContent:"center"}},"+"):null
+      ),
+      g.habits.map(function(h){var v=hT[h.id],reps=cR(data.days,h.id),th=h.threshold||66,rp=Math.min(Math.round(reps/th*100),100),rg=reps>=th;return ce("div",{key:h.id,className:"card"},
+        ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:6}},ce("div",{style:{fontSize:14,fontWeight:500}},h.text),ce("div",{style:{display:"flex",alignItems:"center",gap:6}},ce("span",{style:{fontSize:11,color:rg?"var(--green)":"var(--txt3)",fontWeight:rg?500:400}},reps+"/"+th),rg?ce("button",{onClick:function(){gH(h)},style:{fontSize:11,padding:"3px 8px",borderRadius:6,border:"1px solid var(--green)",background:"rgba(29,158,117,.08)",color:"var(--green)",fontWeight:500}},"Graduate"):null)),
+        ce("div",{style:{height:3,background:"var(--bg2)",borderRadius:2,marginBottom:10,overflow:"hidden"}},ce("div",{style:{height:"100%",width:rp+"%",background:rg?"var(--green)":g.color,borderRadius:2,transition:"width .3s"}})),
+        ce("div",{style:{display:"flex",gap:8}},ce("button",{className:"bi"+(v==="done"?" on":""),onClick:function(){sH(h.id,"done")}},"\u2713 "+h.ideal),ce("button",{className:"bb"+(v==="broken"?" on":""),onClick:function(){sH(h.id,"broken")}},"\u00BD "+h.broken))
+      )}),
+      showAdd===g.id?ce("div",{style:{padding:"12px 14px",borderRadius:12,background:"var(--bg)",border:"1.5px dashed var(--border)",marginBottom:8}},
+        ce("div",{style:{fontSize:13,fontWeight:500,marginBottom:8,color:g.color}},"Add new rep"),
+        ce("input",{className:"inp",placeholder:"Habit name",value:newH.text,onChange:function(e){sNH(Object.assign({},newH,{text:e.target.value}))}}),
+        ce("input",{className:"inp",placeholder:"Ideal version",value:newH.ideal,onChange:function(e){sNH(Object.assign({},newH,{ideal:e.target.value}))}}),
+        ce("input",{className:"inp",placeholder:"Broken day version",value:newH.broken,onChange:function(e){sNH(Object.assign({},newH,{broken:e.target.value}))}}),
+        ce("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8}},ce("span",{style:{fontSize:12,color:"var(--txt3)"}},"Graduate after"),ce("input",{type:"number",value:newH.threshold,onChange:function(e){sNH(Object.assign({},newH,{threshold:e.target.value}))},style:{width:60,padding:"6px 8px",fontSize:13,borderRadius:8,border:"1px solid var(--border)",background:"var(--bg)",color:"var(--txt)",textAlign:"center"}}),ce("span",{style:{fontSize:12,color:"var(--txt3)"}},"reps")),
+        ce("div",{style:{display:"flex",gap:8}},ce("button",{onClick:function(){aH(g.id)},style:{flex:1,padding:8,fontSize:13,fontWeight:500,borderRadius:8,border:"none",background:g.color,color:"#fff"}},"Add"),ce("button",{onClick:function(){sSA(null)},style:{padding:"8px 16px",fontSize:13,borderRadius:8,border:"1px solid var(--border)",background:"var(--bg2)",color:"var(--txt2)"}},"Cancel"))
+      ):null,
+      g.gr.length>0?ce("div",{style:{marginTop:4,padding:"0 2px"}},ce("div",{onClick:function(){sSG(!showGrad)},style:{fontSize:12,color:"var(--txt3)",cursor:"pointer",display:"flex",alignItems:"center",gap:4}},ce("span",{style:{fontSize:11}},showGrad?"\u25BE":"\u203A"),g.gr.length+" graduated"),showGrad?g.gr.map(function(gg,i){return ce("div",{key:i,style:{marginTop:6,padding:"8px 12px",borderRadius:10,background:"var(--bg)",border:"1px dashed var(--border)",display:"flex",alignItems:"center",gap:8}},ce("span",{style:{fontSize:14,color:"var(--green)"}},"\u2713"),ce("div",null,ce("div",{style:{fontSize:13,color:"var(--txt3)"}},gg.text),ce("div",{style:{fontSize:11,color:"var(--txt3)"}},gg.note+" \u00B7 "+gg.reps+" reps")))}):null):null
+    )}),
+    // Nightly reflex
+    ce("div",{style:{marginTop:8,padding:18,borderRadius:16,background:"var(--bg2)",border:"1px solid var(--border)"}},
+      ce("div",{style:{fontSize:15,fontWeight:500,marginBottom:12}},"\u{1F319} Nightly reflex"),
+      [{k:"win",l:"\u26A1 Win of the day",p:"Best rep today..."},{k:"wrong",l:"\u274C What went wrong",p:"One thing..."},{k:"tmr",l:"\u{1F3AF} Tomorrow's #1",p:"The one task..."}].map(function(f){return ce("div",{key:f.k,style:{marginBottom:10}},ce("div",{style:{fontSize:12,fontWeight:500,color:"var(--txt2)",marginBottom:4}},f.l),ce("textarea",{className:"ta",value:rT[f.k]||"",onChange:function(e){sR(f.k,e.target.value)},placeholder:f.p,rows:2}))})
+    ),
+    ce("div",{style:{margin:"16px 0",padding:"12px 16px",borderRadius:12,background:"var(--bg2)",display:"flex",alignItems:"flex-start",gap:10}},ce("span",{style:{fontSize:16,lineHeight:"24px"}},"\u26A1"),ce("div",null,ce("div",{style:{fontSize:13,fontWeight:500}},"Now, not how"),ce("div",{style:{fontSize:12,color:"var(--txt3)",lineHeight:1.5,marginTop:2}},"Caught yourself designing instead of doing? Redirect now.")))
+  ):
+  // DAY PLAN
+  ce("div",null,
+    ce("div",{style:{fontSize:13,color:"var(--txt3)",marginBottom:16}},"Slot tasks into energy zones. If morning gets hijacked, slide tasks down."),
+    PH.map(function(ph){var tasks=tp[ph.id]||[];var isA=addP===ph.id;return ce("div",{key:ph.id,className:"pz",style:{borderColor:ph.color+"33"}},
+      ce("div",{style:{display:"flex",alignItems:"center",gap:8,marginBottom:8}},ce("span",{style:{fontSize:16}},ph.emoji),ce("div",null,ce("div",{style:{fontSize:14,fontWeight:500,color:ph.color}},ph.label),ce("div",{style:{fontSize:11,color:"var(--txt3)"}},ph.sub))),
+      tasks.length>0?tasks.map(function(t){return ce("div",{key:t.id,className:"pi"},ce("div",{className:"pc"+(t.done?" dn":""),onClick:function(){tPT(ph.id,t.id)}},t.done?"\u2713":""),ce("div",{style:{flex:1,fontSize:13,color:t.done?"var(--txt3)":"var(--txt)",textDecoration:t.done?"line-through":"none",lineHeight:1.4}},t.text),ce("button",{onClick:function(){rPT(ph.id,t.id)},style:{border:"none",background:"none",color:"var(--txt3)",fontSize:14,padding:"0 4px",flexShrink:0}},"\u00D7"))}):ce("div",{style:{fontSize:12,color:"var(--txt3)",padding:"4px 0"}},"No tasks yet"),
+      isA?ce("div",{style:{display:"flex",gap:6,marginTop:6}},ce("input",{className:"inp",style:{flex:1,marginBottom:0},placeholder:"What to do...",value:newTask,onChange:function(e){sNT(e.target.value)},onKeyDown:function(e){if(e.key==="Enter")aPT(ph.id)}}),ce("button",{onClick:function(){aPT(ph.id)},style:{padding:"6px 12px",fontSize:12,borderRadius:8,border:"none",background:ph.color,color:"#fff",fontWeight:500}},"+"),ce("button",{onClick:function(){sAP(null);sNT("")},style:{padding:"6px 8px",fontSize:12,borderRadius:8,border:"1px solid var(--border)",background:"var(--bg2)",color:"var(--txt3)"}},"\u00D7")):ce("button",{onClick:function(){sAP(ph.id);sNT("")},style:{width:"100%",padding:6,fontSize:13,border:"none",background:"transparent",color:"var(--txt3)",textAlign:"left",cursor:"pointer"}},"+  Add task")
+    )})
+  )
+):null,
+
+// WEEK
+tab==="week"?ce("div",{style:{padding:"0 16px"}},
+  ce("div",{style:{fontSize:16,fontWeight:500,marginBottom:16}},"This week"),
+  ce("div",{style:{overflowX:"auto",paddingBottom:4}},ce("div",{style:{display:"grid",gridTemplateColumns:"minmax(110px,1fr) repeat(7,32px)",gap:"6px 4px",alignItems:"center",minWidth:360}},ce("div"),
+    wd.map(function(d,i){var isT=dk(d)===today;return ce("div",{key:i,style:{textAlign:"center",fontSize:12,fontWeight:isT?500:400,color:isT?"var(--txt)":"var(--txt3)"}},WK[d.getDay()],ce("br"),ce("span",{style:{fontSize:11}},d.getDate()))}),
+    hab.map(function(h){var idO=IDS.find(function(x){return x.id===h.identity});return ce(F,{key:h.id},ce("div",{style:{fontSize:12,color:"var(--txt2)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap",paddingRight:6}},(idO?idO.emoji:"")+" "+h.text),wd.map(function(d,i){var k=dk(d),v=(data.days[k]||{})[h.id],p=k<=today;return ce("div",{key:i,style:{display:"flex",justifyContent:"center",alignItems:"center",height:22}},v==="done"?ce("span",{style:{width:12,height:12,borderRadius:"50%",background:"var(--green)",display:"block"}}):v==="broken"?ce("span",{style:{width:12,height:12,borderRadius:"50%",background:"var(--amber)",display:"block"}}):p?ce("span",{style:{width:12,height:12,borderRadius:"50%",background:"var(--border)",opacity:.4,display:"block"}}):ce("span",{style:{width:12,height:12}}))}))})
+  )),
+  ce("div",{style:{display:"flex",gap:12,marginTop:14,fontSize:12,color:"var(--txt3)"}},ce("span",{style:{display:"flex",alignItems:"center",gap:4}},ce("span",{style:{width:10,height:10,borderRadius:"50%",background:"var(--green)",display:"inline-block"}}),"Ideal"),ce("span",{style:{display:"flex",alignItems:"center",gap:4}},ce("span",{style:{width:10,height:10,borderRadius:"50%",background:"var(--amber)",display:"inline-block"}}),"Broken"),ce("span",{style:{display:"flex",alignItems:"center",gap:4}},ce("span",{style:{width:10,height:10,borderRadius:"50%",background:"var(--border)",opacity:.4,display:"inline-block"}}),"Missed")),
+  ce("div",{style:{marginTop:20,fontSize:14,fontWeight:500,marginBottom:10}},"Rep counter"),
+  hab.map(function(h){var reps=cR(data.days,h.id),th=h.threshold||66,rp=Math.min(Math.round(reps/th*100),100),rg=reps>=th,idO=IDS.find(function(x){return x.id===h.identity});return ce("div",{key:h.id,style:{display:"flex",alignItems:"center",gap:10,marginBottom:8}},ce("div",{style:{flex:1,minWidth:0}},ce("div",{style:{fontSize:12,color:"var(--txt2)",overflow:"hidden",textOverflow:"ellipsis",whiteSpace:"nowrap"}},(idO?idO.emoji:"")+" "+h.text),ce("div",{style:{height:4,background:"var(--bg2)",borderRadius:2,marginTop:4,overflow:"hidden"}},ce("div",{style:{height:"100%",width:rp+"%",background:rg?"var(--green)":(idO?idO.color:"#888"),borderRadius:2,transition:"width .3s"}}))),ce("span",{style:{fontSize:12,fontWeight:500,color:rg?"var(--green)":"var(--txt3)",whiteSpace:"nowrap"}},reps+"/"+th))}),
+  ce("div",{style:{marginTop:20,padding:"16px 18px",background:"var(--bg2)",borderRadius:16}},ce("div",{style:{fontSize:14,fontWeight:500,marginBottom:10}},"Week stats"),function(){var a=0,b=0,m=0;wd.forEach(function(d){var k=dk(d);if(k>today)return;hab.forEach(function(h){var v=(data.days[k]||{})[h.id];if(v==="done")a++;else if(v==="broken")b++;else m++})});var t=a+b+m,l=t>0?Math.round((a+b)/t*100):0;return ce("div",{style:{display:"flex",textAlign:"center"}},ce("div",{style:{flex:1}},ce("div",{style:{fontSize:24,fontWeight:500,color:"var(--green)"}},l+"%"),ce("div",{style:{fontSize:11,color:"var(--txt3)",marginTop:2}},"Landed")),ce("div",{style:{flex:1}},ce("div",{style:{fontSize:24,fontWeight:500}},a),ce("div",{style:{fontSize:11,color:"var(--txt3)",marginTop:2}},"Ideal")),ce("div",{style:{flex:1}},ce("div",{style:{fontSize:24,fontWeight:500,color:"var(--amber)"}},b),ce("div",{style:{fontSize:11,color:"var(--txt3)",marginTop:2}},"Broken")),ce("div",{style:{flex:1}},ce("div",{style:{fontSize:24,fontWeight:500,color:"var(--txt3)"}},m),ce("div",{style:{fontSize:11,color:"var(--txt3)",marginTop:2}},"Missed")))}())
+):null,
+
+// MAP
+tab==="map"?ce("div",{style:{padding:"0 16px"}},
+  ce("div",{style:{fontSize:16,fontWeight:500,marginBottom:2}},"Identity map"),
+  ce("div",{style:{fontSize:13,color:"var(--txt3)",marginBottom:20}},"Tap \"Edit\" when you hit a milestone."),
+  IDS.map(function(id){var m=mp[id.id]||{now:"",next:""},idG=grad.filter(function(g){return g.identity===id.id}),isE=editMap===id.id;return ce("div",{key:id.id,style:{marginBottom:12,padding:"16px 18px",borderRadius:16,background:id.bg,border:".5px solid "+id.color+"22"}},
+    ce("div",{style:{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:12}},ce("div",{style:{display:"flex",alignItems:"center",gap:8}},ce("span",{style:{fontSize:18}},id.emoji),ce("span",{style:{fontSize:15,fontWeight:500,color:id.color}},id.label)),!isE&&id.id!=="nownothow"?ce("button",{onClick:function(){sEM(id.id);sMD({now:m.now,next:m.next})},style:{fontSize:12,padding:"4px 10px",borderRadius:6,border:".5px solid "+id.color+"44",background:"var(--bg)",color:id.color}},"Edit"):null),
+    isE?ce("div",null,ce("div",{style:{fontSize:10,fontWeight:500,color:"var(--green)",textTransform:"uppercase",letterSpacing:1.2,marginBottom:4}},"Where I am"),ce("textarea",{className:"ta",value:mapDr.now,onChange:function(e){sMD(Object.assign({},mapDr,{now:e.target.value}))},rows:2,style:{marginBottom:8}}),ce("div",{style:{fontSize:10,fontWeight:500,color:"var(--amber)",textTransform:"uppercase",letterSpacing:1.2,marginBottom:4}},"Next milestone"),ce("textarea",{className:"ta",value:mapDr.next,onChange:function(e){sMD(Object.assign({},mapDr,{next:e.target.value}))},rows:2,style:{marginBottom:8}}),ce("div",{style:{display:"flex",gap:8}},ce("button",{onClick:function(){sM(id.id)},style:{flex:1,padding:8,fontSize:13,fontWeight:500,borderRadius:8,border:"none",background:id.color,color:"#fff"}},"Save"),ce("button",{onClick:function(){sEM(null)},style:{padding:"8px 16px",fontSize:13,borderRadius:8,border:"1px solid var(--border)",background:"var(--bg2)",color:"var(--txt2)"}},"Cancel")))
+    :ce("div",null,ce("div",{style:{display:"flex",gap:16}},ce("div",{style:{flex:1}},ce("div",{style:{fontSize:10,fontWeight:500,color:"var(--green)",textTransform:"uppercase",letterSpacing:1.2,marginBottom:4}},"Where I am"),ce("div",{style:{fontSize:13,color:"var(--txt)",lineHeight:1.6}},m.now||"\u2014")),ce("div",{style:{width:1,background:id.color+"33",flexShrink:0}}),ce("div",{style:{flex:1}},ce("div",{style:{fontSize:10,fontWeight:500,color:"var(--amber)",textTransform:"uppercase",letterSpacing:1.2,marginBottom:4}},"Next milestone"),ce("div",{style:{fontSize:13,color:"var(--txt)",lineHeight:1.6}},m.next||"\u2014"))),idG.length>0?ce("div",{style:{marginTop:10,paddingTop:10,borderTop:".5px solid "+id.color+"22"}},ce("div",{style:{fontSize:11,fontWeight:500,color:"var(--txt3)",marginBottom:4}},"Graduated"),idG.map(function(g,i){return ce("div",{key:i,style:{fontSize:12,color:"var(--txt3)",lineHeight:1.5}},"\u2713 "+g.text+" \u2014 "+g.reps+" reps")})):null,id.id==="nownothow"?ce("div",{style:{marginTop:8,fontSize:12,color:"var(--txt3)",fontStyle:"italic"}},"Principle \u2014 governs everything else."):null)
+  )})
+):null,
+
+// REVIEW
+tab==="review"?ce("div",{style:{padding:"0 16px"}},
+  ce("div",{style:{fontSize:16,fontWeight:500,marginBottom:2}},"Sunday review"),
+  ce("div",{style:{fontSize:13,color:"var(--txt3)",marginBottom:20}},"20 min max. Be honest. Then rest."),
+  [{k:"r1",n:"1",l:"Top 3 wins this week",p:"The reps that made a difference..."},{k:"r2",n:"2",l:"What broke and why",p:"The real reason..."},{k:"r3",n:"3",l:"One thing to fix next week",p:"Smallest change..."},{k:"r4",n:"4",l:"Second Brain distill (Discord)",p:"Moved X ideas, starred Y..."},{k:"r5",n:"5",l:"Next week's #1 priority",p:"If I only do one thing..."}].map(function(q){return ce("div",{key:q.k,style:{marginBottom:14}},ce("div",{style:{fontSize:14,fontWeight:500,marginBottom:5,display:"flex",gap:8,alignItems:"center"}},ce("span",{style:{width:24,height:24,borderRadius:"50%",background:"var(--bg2)",display:"inline-flex",alignItems:"center",justifyContent:"center",fontSize:12,color:"var(--txt3)",flexShrink:0}},q.n),q.l),ce("textarea",{className:"ta",value:(data.ref["sun-"+today]||{})[q.k]||"",onChange:function(e){sSR(q.k,e.target.value)},placeholder:q.p,rows:3}))}),
+  ce("div",{style:{padding:"14px 16px",background:"var(--bg2)",borderRadius:14,fontSize:13,color:"var(--txt2)",lineHeight:1.7}},ce("div",{style:{fontWeight:500,marginBottom:4}},"Monthly check (1st Sunday)"),"Update Identity Map \u00B7 Payday 40/50/10 \u00B7 Fund floors: Knowledge RM50, Self-Investment RM80, \u8BD5\u9519 RM60 \u00B7 Net worth snapshot")
+):null,
+
+// TAB BAR
+ce("div",{className:"tbar"},tabs.map(function(t){return ce("button",{key:t.key,className:"tbtn",onClick:function(){sTab(t.key)}},ce("span",{style:{fontSize:18,opacity:tab===t.key?1:.3,transition:"opacity .15s"}},t.icon),ce("span",{style:{fontSize:11,fontWeight:tab===t.key?500:400,color:tab===t.key?"var(--txt)":"var(--txt3)"}},t.label))}))
+)}
+ReactDOM.createRoot(document.getElementById("root")).render(ce(App));
+}();
+</script>
+</body>
+</html>
